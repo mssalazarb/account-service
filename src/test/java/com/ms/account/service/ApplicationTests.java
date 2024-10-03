@@ -1,10 +1,10 @@
-package com.msa.account.service;
+package com.ms.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AccountServiceApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

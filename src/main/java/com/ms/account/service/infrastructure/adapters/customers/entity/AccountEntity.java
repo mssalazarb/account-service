@@ -14,19 +14,19 @@ public class AccountEntity {
     @Id //este atributo permite identificar el primary key por lo general estos se deben autogenerar
     @GeneratedValue(strategy = GenerationType.IDENTITY) // genera los valores para los primary key de manera auto
 
-    @Column(name = "ID") //esto permite identificar como se llama las columnas en la BD
+    @Column(name = "ACC_ID") //esto permite identificar como se llama las columnas en la BD
     private Integer id;
 
-    @Column(name = "NUM_ACCOUNT")
+    @Column(name = "ACC_NUMBER_ACCOUNT")
     private String numberAccount;
 
-    @Column(name = "CUR_TYPE")
+    @Column(name = "ACC_CURRENCY_TYPE")
     private Integer currencyType;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "ACC_AMOUNT")
     private BigDecimal amount;
 
-    @Column(name = "CUS_ID")
+    @Column(name = "ACC_CUSTOMER_ID")
     private Integer customerId;
 
     @Column(name = "ACC_CREATE_AT")
