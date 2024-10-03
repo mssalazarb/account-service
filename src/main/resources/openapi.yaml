@@ -6,7 +6,7 @@ info:
       <h3>Maestría en Software - Diseño de patrones de API</h3>
       <br/>
       <img src="https://blogposgrados.ups.edu.ec/hs-fs/hubfs/Logo-Posgrados.png?width=1517&height=262&name=Logo-Posgrados.png" alt="Image" align="right" width="400"/>
-      
+    
       <p>This is a contract to manage the updating of accounts with respect to movements based on the OpenAPI 3.0 specification. This is a contract that uses the API First-Contract principle to standardize the creation of endpoints to be used in our service and improve the development of our APIs.</p> 
     </div>
   termsOfService: http://swagger.io/terms/
@@ -17,12 +17,12 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0 - SNAPSHOT
 externalDocs:
-  description: Historia de usuario
-  url: https://github.com/mssalazarb/api-desing-patterns/issues/5
+  description: Kanban del Proyecto
+  url: https://github.com/users/mssalazarb/projects/6
 servers:
-  - url: http://localhost:8090/api/v1
+  - url: http://localhost:8085/api/v1
     description: service
-  - url: http://grupo1.docker.localhost/api/v1
+  - url: http://localhost:8080/api/v1
     description: api-gateway
 tags:
   - name: account
@@ -61,7 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account' 
+                $ref: '#/components/schemas/Account'
         '400':
           description: There is an error creating the due to a syntax error
           content:
@@ -75,178 +75,145 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   /accounts/{id}:
-      get:
-        tags:
-          - account
-        summary: Get Account by ID
-        description: Get Account by Unique ID
-        operationId: getAccountById
-        parameters:
-          - name: x-sw-client-request-id
-            in: header
-            description: Unique ID for the request
-            required: true
-            schema:
-              type: string
-          - name: x-cm-client-user-agent
-            in: header
-            description: Type of device that consume the endpoint
-            required: true
-            schema:
-              type: string
-          - name: id
-            in: path
-            description: ID of account to return
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: Successfully obtained account
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Account'
-                example:
-                - id: 1
-                  numberAccount: 123456780
-                  amount: 123
-                  customerId: 1
-          '204':
-            description: Account not found
-            content: 
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-                example:
-                  []
-          '400':
-            description: There is an error creating the due to a syntax error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-                example:
-                  title: 'Error creating account'
-                  detail: 'Some fields are incorrect'
-                  errors:
-                    - message: 'The type of movement is incorrect'
-                    - message: 'The account entered must be greater than 0'
-                  status: 400
-      put:
-        tags:
-          - account
-        summary: Update amount of account
-        description: update the amount of an account by its id
-        operationId: updateAccount
-        parameters:
-          - name: x-sw-client-request-id
-            in: header
-            description: Unique ID for the request
-            required: true
-            schema:
-              type: string
-          - name: x-cm-client-user-agent
-            in: header
-            description: Type of device that consume the endpoint
-            required: true
-            schema:
-              type: string
-          - name: id
-            in: path
-            description: ID of account to return
-            required: true
-            schema:
-              type: integer
-              format: int64
-        requestBody:
-          description: Update an amount of account
+    get:
+      tags:
+        - account
+      summary: Get Account by ID
+      description: Get Account by Unique ID
+      operationId: getAccountById
+      parameters:
+        - name: x-sw-client-request-id
+          in: header
+          description: Unique ID for the request
+          required: true
+          schema:
+            type: string
+        - name: x-cm-client-user-agent
+          in: header
+          description: Type of device that consume the endpoint
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of account to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully obtained account
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        '204':
+          description: Account not found
+        '400':
+          description: There is an error creating the due to a syntax error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - account
+      summary: Update amount of account
+      description: update the amount of an account by its id
+      operationId: updateAccount
+      parameters:
+        - name: x-sw-client-request-id
+          in: header
+          description: Unique ID for the request
           required: true
-        responses:
-          '200':
-            description: Account updated successfully
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Account' 
-                example:
-                - id: 1
-                  numberAccount: 123456780
-                  amount: 123
-                  customerId: 1
-          '204':
-            description: Account not found
-          '409':
-            description: Conflict when updating account amount
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          '400':
-            description: There is an error creating the due to a syntax error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+          schema:
+            type: string
+        - name: x-cm-client-user-agent
+          in: header
+          description: Type of device that consume the endpoint
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of account to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an amount of account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        '200':
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '204':
+          description: Account not found
+        '409':
+          description: Conflict when updating account amount
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: There is an error creating the due to a syntax error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /accounts/customer/{id}:
-      get:
-        tags:
-          - account
-        summary: Get accounts by customer ID GET
-        description: Get accounts by customer Unique ID GET
-        operationId: getAccountByIdCustomer
-        parameters:
-          - name: x-sw-client-request-id
-            in: header
-            description: Unique ID for the request
-            required: true
-            schema:
-              type: string
-          - name: x-cm-client-user-agent
-            in: header
-            description: Type of device that consume the endpoint
-            required: true
-            schema:
-              type: string
-          - name: id
-            in: path
-            description: ID of account to return
-            required: true
-            schema:
-              type: integer
-              format: int64
-        responses:
-          '200':
-            description: Successfully obtained accounts
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Account' 
-                example:
-                - id: 1
-                  numberAccount: 123456780
-                  amount: 123
-                  customerId: 1
-          '204':
-            description: Customer does not have accounts
-          '400':
-            description: There is an error creating the due to a syntax error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-                example:
-                  title: 'Error creating movement'
-                  detail: 'Some fields are incorrect'
-                  errors:
-                    - message: 'The type of movement is incorrect'
-                    - message: 'The amount entered must be greater than 0'
-                  status: 400
+    get:
+      tags:
+        - account
+      summary: Get accounts by customer ID GET
+      description: Get accounts by customer Unique ID GET
+      operationId: getAccountByIdCustomer
+      parameters:
+        - name: x-sw-client-request-id
+          in: header
+          description: Unique ID for the request
+          required: true
+          schema:
+            type: string
+        - name: x-cm-client-user-agent
+          in: header
+          description: Type of device that consume the endpoint
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ID of account to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully obtained accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '204':
+          description: Customer does not have accounts
+        '400':
+          description: There is an error creating the due to a syntax error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Account:
