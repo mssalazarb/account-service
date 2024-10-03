@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  test:
+    build:
+      context: src/main/java
+      dockerfile: test.Dockerfile
+    container_name: test
+    volumes:
+      - ./reports:/app/build
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+      - APP_NAME=accounts-service
+      - DB_HOST=accounts_service_db
+      - DB_PORT=5432
+      - DB_NAME=accounts_service
+      - DB_USER=accounts_service
+      - DB_PASSWORD=accounts
+    depends_on:
+      - db
+    command: >
+      ./gradlew --no-daemon
+      -g ./.gradle-cache
+      test
+  db:
+    image: postgres:latest
+    container_name: postgres_test
+    environment:
+      POSTGRES_DB: accounts_service
+      POSTGRES_USER: accounts_service
+      POSTGRES_PASSWORD: accounts_service

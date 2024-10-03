@@ -2,14 +2,15 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.openapi.generator' version '7.4.0'
 }
 
-group = 'com.msa'
-version = '0.0.1-SNAPSHOT'
+group = 'com.msa.service.accounts'
+version = '1.0.0'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(22)
 	}
 }
 
@@ -24,9 +25,13 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -37,3 +42,27 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+openApiGenerate {
+	inputSpec.set("$rootDir/src/main/resources/openapi.yaml")
+	generatorName = "spring"
+	inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
+	outputDir = "$buildDir/generated".toString()
+	apiPackage = "com.msa.service.accounts.api"
+	modelPackage = "com.msa.service.accounts.model"
+	invokerPackage = "com.msa.service.accounts.api"
+	library = "spring-boot"
+	configOptions = [
+			useSpringBoot3: "true",
+			serializableModel: "true",
+			dateLibrary: "java8",
+			openApiNullable: "false",
+			configPackage: "com.msa.service.accounts",
+			sourceFolder: "src/main/java",
+			basePackage: "com.msa",
+			interfaceOnly: "true"
+	]
+}
+
+compileJava.dependsOn tasks.named("openApiGenerate")
+sourceSets.main.java.srcDirs = ["$buildDir/generated/src/main/java", "src/main/java"]
