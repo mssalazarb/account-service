@@ -1,5 +1,5 @@
 FROM gradle:8.10.1-jdk17-alpine AS build
-COPY --chown=gradle:gradle src /home/gradle/src/producer
+COPY --chown=gradle:gradle . /home/gradle/src/producer
 WORKDIR /home/gradle/src/producer
 RUN gradle build --no-daemon --stacktrace -x test
 
