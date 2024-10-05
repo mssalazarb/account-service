@@ -1,0 +1,30 @@
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8085
+
+spring:
+  application:
+    name: account-service
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/account_service
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/account_service
+    user: postgres
+    password: postgres
+    locations: classpath:db/migration
+
+
+
