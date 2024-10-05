@@ -7,31 +7,31 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "T_ACCOUNTS")
+@Table(name = "accounts")
 @Data
 public class AccountEntity {
 
     @Id //este atributo permite identificar el primary key por lo general estos se deben autogenerar
     @GeneratedValue(strategy = GenerationType.IDENTITY) // genera los valores para los primary key de manera auto
 
-    @Column(name = "ID") //esto permite identificar como se llama las columnas en la BD
+    @Column(name = "id") //esto permite identificar como se llama las columnas en la BD
     private Integer id;
 
-    @Column(name = "NUMBER_ACCOUNT")
+    @Column(name = "number_account")
     private String numberAccount;
 
-    @Column(name = "CURRENCY_TYPE")
+    @Column(name = "currency_type")
     private Integer currencyType;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "amount")
     private BigDecimal amount;
 
-    @Column(name = "CUSTOMER_ID")
+    @Column(name = "customer_id")
     private Integer customerId;
 
-    @Column(name = "ACC_CREATE_AT")
+    @Column(name = "acc_create_at")
     private Timestamp createAt;
 
-    @Column(name = "ACC_UPDATE_AT")
+    @Column(name = "acc_updated_at")
     private Timestamp updateAt;
 }
