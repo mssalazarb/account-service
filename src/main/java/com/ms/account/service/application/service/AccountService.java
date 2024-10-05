@@ -6,7 +6,10 @@ import com.ms.account.service.domain.models.Account;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+
 @Service
 @RequiredArgsConstructor
 public class AccountService implements AccountInPort {
@@ -15,6 +18,9 @@ public class AccountService implements AccountInPort {
 
     @Override
     public Account saveAccount(Account account) {
+        if (account.getCustomerId() == 2) {
+            throw new HttpClientErrorException(HttpStatus.CONFLICT, "Error creando cuenta");
+        }
         return accountOutPort.save(account);
     }
 
