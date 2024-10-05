@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /api/v1
+    context-path: /api/v1/account-service
   port: 8085
 
 spring:
