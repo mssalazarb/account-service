@@ -1,31 +1,18 @@
-buildscript {
-	repositories {
-		mavenCentral()
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-	}
-	dependencies {
-		classpath "org.openapitools:openapi-generator-gradle-plugin:7.0.1"
-	}
-}
-
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
+	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.openapi.generator' version '7.4.0'
 }
 
-group = 'com.ms'
-version = '0.0.1-SNAPSHOT'
+group = 'com.ms.account.service'
+version = '1.0.0'
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
-
-apply plugin: "org.openapi.generator"
 
 configurations {
 	compileOnly {
@@ -37,60 +24,47 @@ repositories {
 	mavenCentral()
 }
 
-ext{
-	set('springCloudVersion', "2023.0.3")
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	//implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	// manual dependencies
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-	//openapi dependencies
-	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
-	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-consul-discovery
-	//eureka client
-	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-
 }
 
+tasks.named('test') {
+	useJUnitPlatform()
+}
 
-tasks.register('buildSpringServer', org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+openApiGenerate {
+	inputSpec.set("$rootDir/src/main/resources/openapi.yaml")
 	generatorName = "spring"
 	inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
 	outputDir = "$buildDir/generated".toString()
-	apiPackage = "com.ms.customer.service.server"
-	modelPackage = "com.ms.customer.service.server.models"
+	apiPackage = "com.ms.account.service.api"
+	modelPackage = "com.ms.account.service.model"
+	invokerPackage = "com.ms.account.service.api"
 	library = "spring-boot"
 	configOptions = [
 			useSpringBoot3: "true",
 			serializableModel: "true",
 			dateLibrary: "java8",
 			openApiNullable: "false",
-			configPackage: "com.ms.customer.service",
+			configPackage: "com.ms.account.service",
 			sourceFolder: "src/main/java",
 			basePackage: "com.ms",
 			interfaceOnly: "true"
 	]
 }
 
-compileJava.dependsOn buildSpringServer
-
+compileJava.dependsOn tasks.named("openApiGenerate")
 sourceSets.main.java.srcDirs = ["$buildDir/generated/src/main/java", "src/main/java"]
-
-tasks.named('test') {
-	useJUnitPlatform()
-}

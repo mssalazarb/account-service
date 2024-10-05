@@ -1,6 +1,7 @@
 package com.ms.account.service.infrastructure.adapters.rest.mapper;
 
-import com.ms.customer.service.server.models.Account;
+
+import com.ms.account.service.model.Account;
 import org.mapstruct.Mapper;
 
 import java.util.List;

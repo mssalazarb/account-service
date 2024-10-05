@@ -1,9 +1,10 @@
 package com.ms.account.service.infrastructure.adapters.rest;
 
+import com.ms.account.service.api.AccountsApi;
 import com.ms.account.service.application.ports.in.AccountInPort;
 import com.ms.account.service.infrastructure.adapters.rest.mapper.AccountDomainMapper;
-import com.ms.customer.service.server.AccountsApi;
-import com.ms.customer.service.server.models.Account;
+
+import com.ms.account.service.model.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
